@@ -226,6 +226,26 @@ mkey.press_keys_simultaneously(
 
 
 ```python
+# You can block the mouse/keyboard input while executing actions.
+# That way, the user can't mess it up. 
+# If something goes wrong, press ctrl+alt+del 
+# This will automatically unlock the mouse/keyboard
+
+if mkey.block_user_input():
+    try:
+        for k in range(3):
+            mkey.right_click()
+            sleep(1)
+            mkey.left_click_xy_natural(10, 10)
+            sleep(1)
+    finally:
+        mkey.unblock_user_input()
+```
+
+
+
+
+```python
 # You can send Unicode strings as well
 mkey.force_activate_window(10290540)
 mkey.send_unicode('bababöä')
