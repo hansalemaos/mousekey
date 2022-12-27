@@ -25,6 +25,9 @@ import keyboard as key_b
 from ctypes_rgb_values import get_rgb_values
 from ctypes_window_info import get_window_infos
 from flatten_everything import flatten_everything, ProtectedTuple
+BlockInput = ctypes.windll.user32.BlockInput
+BlockInput.argtypes = [wintypes.BOOL]
+BlockInput.restype = wintypes.BOOL
 
 childcounter = sys.modules[__name__]
 childcounter.rightnow = None
@@ -2427,8 +2430,19 @@ def press_multiple_keys_own_interval(keystopress, presstime=1.1):
     time.sleep(restssleep)
 
 
+
+
+def block_user_input():
+    return BlockInput(True)
+
+def unblock_user_input():
+    return BlockInput(False)
+
+
 class MouseKey:
     def __init__(self):
+        self.block_user_input = block_user_input
+        self.unblock_user_input = unblock_user_input
 
         self.get_active_window = get_active_window
         self.send_unicode = send_unicode
