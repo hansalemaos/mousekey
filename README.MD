@@ -231,6 +231,7 @@ mkey.press_keys_simultaneously(
 # If something goes wrong, press ctrl+alt+del 
 # This will automatically unlock the mouse/keyboard
 
+# Here is one example. Always use mkey.block_user_input() / mkey.unblock_user_input()
 if mkey.block_user_input():
     try:
         for k in range(3):
