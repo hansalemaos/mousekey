@@ -25,6 +25,7 @@ import keyboard as key_b
 from ctypes_rgb_values import get_rgb_values
 from ctypes_window_info import get_window_infos
 from flatten_everything import flatten_everything, ProtectedTuple
+
 BlockInput = ctypes.windll.user32.BlockInput
 BlockInput.argtypes = [wintypes.BOOL]
 BlockInput.restype = wintypes.BOOL
@@ -291,40 +292,40 @@ def get_all_infos_point(coordx=None, coordy=None, hwnd_=None):
                                 [
                                     ProtectedTuple(m)
                                     for m in [
-                                        find_elements(r)
-                                        for r in list(
-                                            flatten_everything(
+                                    find_elements(r)
+                                    for r in list(
+                                        flatten_everything(
+                                            [
                                                 [
-                                                    [
-                                                        list(
-                                                            set(
-                                                                [
-                                                                    z
-                                                                    for z in flatten_everything(
-                                                                        GetParent(p)
-                                                                    )
-                                                                    if isinstance(
-                                                                        z, int
-                                                                    )
-                                                                ]
+                                                    list(
+                                                        set(
+                                                            [
+                                                                z
+                                                                for z in flatten_everything(
+                                                                GetParent(p)
                                                             )
-                                                        )
-                                                        for p in flatten_everything(
-                                                            [[y.hwnd for y in x]]
-                                                        )
-                                                    ]
-                                                    for x in (
-                                                        [
-                                                            find_elements(tra)
-                                                            for tra in get_all_children(
-                                                                x.hwnd
+                                                                if isinstance(
+                                                                z, int
                                                             )
-                                                        ]
+                                                            ]
+                                                        )
                                                     )
+                                                    for p in flatten_everything(
+                                                    [[y.hwnd for y in x]]
+                                                )
+                                                ]
+                                                for x in (
+                                                [
+                                                    find_elements(tra)
+                                                    for tra in get_all_children(
+                                                    x.hwnd
+                                                )
                                                 ]
                                             )
+                                            ]
                                         )
-                                    ]
+                                    )
+                                ]
                                 ]
                             )
                         )
@@ -356,7 +357,6 @@ def start_failsafe(hotkey="ctrl+e"):
 
 
 SHORT = ctypes.c_short
-
 
 VK_LBUTTON = 0x01  # Left mouse button
 VK_RBUTTON = 0x02  # Right mouse button
@@ -1043,7 +1043,6 @@ def send_unicode(s):
 
 LPINPUT = ctypes.POINTER(INPUT)
 
-
 user32.SendInput.errcheck = _check_count
 user32.SendInput.argtypes = (
     wintypes.UINT,
@@ -1100,8 +1099,8 @@ def move_rel(x, y):
 
 
 def move(
-    x,
-    y,
+        x,
+        y,
 ):
     relative = False
     mouseFlag = MOUSEEVENTF_MOVE
@@ -1164,14 +1163,14 @@ def add_random_n_places(a, n, low=-10, high=10):
 
 
 def natural_mouse_movement(
-    x,
-    y,
-    min_variation=-2,
-    max_variation=2,
-    use_every=1,
-    sleeptime=(0.005, 0.009),
-    print_coords=True,
-    percent=90,
+        x,
+        y,
+        min_variation=-2,
+        max_variation=2,
+        use_every=1,
+        sleeptime=(0.005, 0.009),
+        print_coords=True,
+        percent=90,
 ):
     nowx, nowy = get_cursor()
     coordtomove = x, y
@@ -1199,11 +1198,11 @@ def natural_mouse_movement(
 
 
 def left_click_xy_natural_relative(
-    x,
-    y,
-    delay=0.1,
-    sleeptime=(0.00005, 0.00009),
-    print_coords=True,
+        x,
+        y,
+        delay=0.1,
+        sleeptime=(0.00005, 0.00009),
+        print_coords=True,
 ):
     natural_mouse_movement_relative(
         x,
@@ -1229,10 +1228,10 @@ def log_split(*args):
 
 
 def natural_mouse_movement_relative(
-    x,
-    y,
-    sleeptime=(0.00005, 0.00009),
-    print_coords=True,
+        x,
+        y,
+        sleeptime=(0.00005, 0.00009),
+        print_coords=True,
 ):
     nowx, nowy = 0, 0
     coordtomove = x * 2, y * 2
@@ -1257,21 +1256,45 @@ def left_click(delay=0.1):
     _mouse_click(MOUSEEVENTF_LEFTUP)
 
 
+def left_mouse_down():
+    _mouse_click(MOUSEEVENTF_LEFTDOWN)
+
+
+def left_mouse_up():
+    _mouse_click(MOUSEEVENTF_LEFTUP)
+
+
+def right_mouse_down():
+    _mouse_click(MOUSEEVENTF_RIGHTDOWN)
+
+
+def right_mouse_up():
+    _mouse_click(MOUSEEVENTF_RIGHTUP)
+
+
+def middle_mouse_down():
+    _mouse_click(MOUSEEVENTF_MIDDLEDOWN)
+
+
+def middle_mouse_up():
+    _mouse_click(MOUSEEVENTF_MIDDLEUP)
+
+
 def left_click_xy(x, y, delay=0.1):
     move(x, y)
     left_click(delay=delay)
 
 
 def left_click_xy_natural(
-    x,
-    y,
-    delay=0.1,
-    min_variation=-3,
-    max_variation=3,
-    use_every=4,
-    sleeptime=(0.005, 0.009),
-    print_coords=True,
-    percent=90,
+        x,
+        y,
+        delay=0.1,
+        min_variation=-3,
+        max_variation=3,
+        use_every=4,
+        sleeptime=(0.005, 0.009),
+        print_coords=True,
+        percent=90,
 ):
     natural_mouse_movement(
         x,
@@ -1298,15 +1321,15 @@ def right_click_xy(x, y, delay=0.1):
 
 
 def right_click_xy_natural(
-    x,
-    y,
-    delay=0.1,
-    min_variation=-1,
-    max_variation=1,
-    use_every=1,
-    sleeptime=(0.005, 0.009),
-    print_coords=True,
-    percent=90,
+        x,
+        y,
+        delay=0.1,
+        min_variation=-1,
+        max_variation=1,
+        use_every=1,
+        sleeptime=(0.005, 0.009),
+        print_coords=True,
+        percent=90,
 ):
     natural_mouse_movement(
         x,
@@ -1322,11 +1345,11 @@ def right_click_xy_natural(
 
 
 def right_click_xy_natural_relative(
-    x,
-    y,
-    delay=0.1,
-    sleeptime=(0.00005, 0.00009),
-    print_coords=True,
+        x,
+        y,
+        delay=0.1,
+        sleeptime=(0.00005, 0.00009),
+        print_coords=True,
 ):
     natural_mouse_movement_relative(
         x,
@@ -1349,15 +1372,15 @@ def middle_click_xy(x, y, delay=0.1):
 
 
 def middle_click_xy_natural(
-    x,
-    y,
-    delay=0.1,
-    min_variation=-3,
-    max_variation=3,
-    use_every=4,
-    sleeptime=(0.005, 0.009),
-    print_coords=True,
-    percent=90,
+        x,
+        y,
+        delay=0.1,
+        min_variation=-3,
+        max_variation=3,
+        use_every=4,
+        sleeptime=(0.005, 0.009),
+        print_coords=True,
+        percent=90,
 ):
     natural_mouse_movement(
         x,
@@ -1373,11 +1396,11 @@ def middle_click_xy_natural(
 
 
 def middle_click_xy_relative(
-    x,
-    y,
-    delay=0.1,
-    sleeptime=(0.00005, 0.00009),
-    print_coords=True,
+        x,
+        y,
+        delay=0.1,
+        sleeptime=(0.00005, 0.00009),
+        print_coords=True,
 ):
     natural_mouse_movement_relative(
         x,
@@ -1411,8 +1434,8 @@ def get_active_window():
             x
             for x in get_window_infos()
             if x.pid == ac["pid"]
-            and x.hwnd == ac["foreground"]
-            and x.tid == ac["active_window"]
+               and x.hwnd == ac["foreground"]
+               and x.tid == ac["active_window"]
         ][0]
     except Exception:
         return []
@@ -1609,7 +1632,6 @@ ascii_vk = {
 ascii_vk.update(dict((c, ord(c)) for c in string.ascii_uppercase + string.digits))
 ascii_vk.update(dict((c, ord(c.upper())) for c in string.ascii_lowercase))
 
-
 """
 
 From here on, almost everything is strongly based on pywinauto:
@@ -1797,7 +1819,6 @@ class KeyAction(object):
 
 
 class VirtualKeyAction(KeyAction):
-
     """Represents a virtual key action e.g. F9 DOWN, etc
 
     Overrides necessary methods of KeyAction
@@ -1827,7 +1848,6 @@ class VirtualKeyAction(KeyAction):
 
 
 class EscapedKeyAction(KeyAction):
-
     """Represents an escaped key action e.g. F9 DOWN, etc
 
     Overrides necessary methods of KeyAction
@@ -1855,7 +1875,6 @@ class EscapedKeyAction(KeyAction):
 
 
 class PauseAction(KeyAction):
-
     """Represents a pause action"""
 
     def __init__(self, how_long):
@@ -1918,13 +1937,13 @@ def handle_code(code, vk_packet):
 
 
 def parse_keys(
-    string,
-    with_spaces=False,
-    with_tabs=False,
-    with_newlines=False,
-    modifiers=None,
-    vk_packet=True,
-    activate_window_before=True,
+        string,
+        with_spaces=False,
+        with_tabs=False,
+        with_newlines=False,
+        modifiers=None,
+        vk_packet=True,
+        activate_window_before=True,
 ):
     """Return the parsed keys"""
 
@@ -1999,12 +2018,12 @@ def parse_keys(
         else:
             # don't output white space unless flags to output have been set
             if (
-                c == " "
-                and not with_spaces
-                or c == "\t"
-                and not with_tabs
-                or c == "\n"
-                and not with_newlines
+                    c == " "
+                    and not with_spaces
+                    or c == "\t"
+                    and not with_tabs
+                    or c == "\n"
+                    and not with_newlines
             ):
                 continue
 
@@ -2047,15 +2066,15 @@ def LoByte(val):
 
 
 def send_keys(
-    handle,
-    keys,
-    pause=0.05,
-    with_spaces=False,
-    with_tabs=False,
-    with_newlines=False,
-    turn_off_numlock=True,
-    vk_packet=True,
-    activate_window_before=True,
+        handle,
+        keys,
+        pause=0.05,
+        with_spaces=False,
+        with_tabs=False,
+        with_newlines=False,
+        turn_off_numlock=True,
+        vk_packet=True,
+        activate_window_before=True,
 ):
     """Parse the keys and type them"""
     sena = (
@@ -2163,7 +2182,6 @@ GetMessage.argtypes = [
     wintypes.UINT,
 ]
 
-
 SendMessage = ctypes.windll.user32.SendMessageW
 SendMessageA = ctypes.windll.user32.SendMessageA
 
@@ -2235,12 +2253,12 @@ def get_fg_window():
 
 
 def send_keystrokes(
-    handle,
-    keystrokes,
-    with_spaces=True,
-    with_tabs=True,
-    with_newlines=True,
-    activate_window_before=True,
+        handle,
+        keystrokes,
+        with_spaces=True,
+        with_tabs=True,
+        with_newlines=True,
+        activate_window_before=True,
 ):
     """
     Silently send keystrokes to the control in an inactive window
@@ -2323,11 +2341,11 @@ def send_keystrokes(
                 keyboard_state_stack.append(new_keyboard_state)
 
                 lparam = (
-                    repeat << 0
-                    | scan << 16
-                    | (flags & 1) << 24
-                    | context_code << 29
-                    | 0 << 31
+                        repeat << 0
+                        | scan << 16
+                        | (flags & 1) << 24
+                        | context_code << 29
+                        | 0 << 31
                 )
 
                 SetKeyboardState(keyboard_state_stack[-1])
@@ -2342,12 +2360,12 @@ def send_keystrokes(
                 keyboard_state_stack.pop()
 
                 lparam = (
-                    repeat << 0
-                    | scan << 16
-                    | (flags & 1) << 24
-                    | context_code << 29
-                    | 1 << 30
-                    | 1 << 31
+                        repeat << 0
+                        | scan << 16
+                        | (flags & 1) << 24
+                        | context_code << 29
+                        | 1 << 30
+                        | 1 << 31
                 )
 
                 PostMessage(handle, up_msg, vk, lparam)
@@ -2430,10 +2448,9 @@ def press_multiple_keys_own_interval(keystopress, presstime=1.1):
     time.sleep(restssleep)
 
 
-
-
 def block_user_input():
     return BlockInput(True)
+
 
 def unblock_user_input():
     return BlockInput(False)
@@ -2481,6 +2498,12 @@ class MouseKey:
         self.press_keys_simultaneously = press_multiple_keys
         self.press_keys_simultaneously_own_interval = press_multiple_keys_own_interval
         self.show_all_keys = allkeys
+        self.left_mouse_down = left_mouse_down
+        self.left_mouse_up = left_mouse_up
+        self.right_mouse_down = right_mouse_down
+        self.right_mouse_up = right_mouse_up
+        self.middle_mouse_down = middle_mouse_down
+        self.middle_mouse_up = middle_mouse_up
         self.t = kthread.KThread(target=self._get_cursor, name="get_cursor")
         self.show_cur = False
 
@@ -2527,14 +2550,14 @@ class MouseKey:
         self.show_cur = False
 
     def show_rgb_values_at_mouse_position(
-        self,
-        sleeptime=0.01,
-        on_left_click=False,
-        on_right_click=False,
-        rgb_values=True,
-        rgba_values=True,
-        coords=True,
-        time_value=True,
+            self,
+            sleeptime=0.01,
+            on_left_click=False,
+            on_right_click=False,
+            rgb_values=True,
+            rgba_values=True,
+            coords=True,
+            time_value=True,
     ):
         return get_rgb_values(
             sleeptime=sleeptime,
